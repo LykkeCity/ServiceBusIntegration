@@ -31,7 +31,7 @@ namespace TestInvoke.Subscriber
 
         public static void Stop()
         {
-            _connection.
+            _connection.Stop();
         }
     }
 
