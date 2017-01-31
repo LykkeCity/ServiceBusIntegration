@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Lykke.ServiceBusIntegration;
 using Lykke.ServiceBusIntegration.Subscriber;
 
-namespace TestInvoke.Subscribe
+namespace TestInvoke.Subscriber
 {
     public static class HowToSubscribe
     {
@@ -27,6 +27,12 @@ namespace TestInvoke.Subscribe
             Console.WriteLine(message);
             return Task.FromResult(0);
         }
+
+
+        public static void Stop()
+        {
+            _connection.
+        }
     }
 
     public class TestDeseializer : IServiceBusMessageDeserializer<string>
@@ -38,3 +44,4 @@ namespace TestInvoke.Subscribe
     }
 
 }
+

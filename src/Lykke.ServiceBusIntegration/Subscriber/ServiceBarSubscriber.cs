@@ -127,7 +127,7 @@ namespace Lykke.ServiceBusIntegration.Subscriber
 
         public ServiceBarSubscriber<TModel> Start()
         {
-            if (_task == null)
+            if (_task != null)
                 return this;
 
             if (_log == null)
@@ -141,15 +141,22 @@ namespace Lykke.ServiceBusIntegration.Subscriber
             return this;
         }
 
+        public void Stop()
+        {
+            if (_task == null)
+                return;
+
+            var task = _task;
+            _task = null;
+            task.Wait();
+        }
 
         private readonly List<Func<TModel, Task>> _subscribers = new List<Func<TModel, Task>>();
-
 
         public ServiceBarSubscriber<TModel> Subscribe(Func<TModel, Task> callback)
         {
             _subscribers.Add(callback);
             return this;
-
         }
 
         void IMessageConsumer<TModel>.Subscribe(Func<TModel, Task> callback)

@@ -1,7 +1,7 @@
 ﻿using System;
 using Lykke.ServiceBusIntegration;
-using TestInvoke.Publish;
-using TestInvoke.Subscribe;
+using TestInvoke.Publisher;
+using TestInvoke.Subscriber;
 
 namespace TestInvoke
 {
@@ -26,5 +26,7 @@ namespace TestInvoke
 
             Console.ReadLine();
         }
+
     }
+
 }
