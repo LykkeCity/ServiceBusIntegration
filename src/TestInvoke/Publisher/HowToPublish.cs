@@ -1,4 +1,5 @@
-﻿using Common.Log;
+﻿using System.Text;
+using Common.Log;
 using Lykke.ServiceBusIntegration;
 using Lykke.ServiceBusIntegration.Publisher;
 
@@ -6,7 +7,6 @@ namespace TestInvoke.Publisher
 {
     public static class HowToPublish
     {
-
 
         private static ServiceBusPublisher<string> _connection;
 
@@ -28,9 +28,9 @@ namespace TestInvoke.Publisher
 
     public class TestServiceBusSerializer : IServiceBusSerializer<string>
     {
-        public string Serialize(string item)
+        public byte[] Serialize(string item)
         {
-            return item;
+            return Encoding.UTF8.GetBytes(item);
         }
     }
 }

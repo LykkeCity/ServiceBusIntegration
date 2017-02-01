@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Lykke.ServiceBusIntegration;
 using Lykke.ServiceBusIntegration.Subscriber;
@@ -37,9 +36,9 @@ namespace TestInvoke.Subscriber
 
     public class TestDeseializer : IServiceBusMessageDeserializer<string>
     {
-        public string Deserialize(string data)
+        public string Deserialize(byte[] data)
         {
-            return data;
+            return Encoding.UTF8.GetString(data);
         }
     }
 

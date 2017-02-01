@@ -12,7 +12,7 @@ namespace Lykke.ServiceBusIntegration.Subscriber
 
     public interface IServiceBusMessageDeserializer<out TModel>
     {
-        TModel Deserialize(string data);
+        TModel Deserialize(byte[] data);
     }
 
     public interface IServiceBusReadStrategy
@@ -99,22 +99,18 @@ namespace Lykke.ServiceBusIntegration.Subscriber
 
             while (_task != null)
             {
-                var message = receiver.Receive();
+                var message = await receiver.ReceiveAsync(5000);
 
                 if (message == null)
-                {
-                    await Task.Delay(1000);
                     continue;
-                }
 
-
-                var body = message.GetBody<string>();
-
+                var body = message.GetBody<byte[]>();
                 var data = _deserializer.Deserialize(body);
 
                 foreach (var subscriber in _subscribers)
                     await subscriber(data);
 
+                receiver.Accept(message);
             }
 
         }
@@ -131,10 +127,10 @@ namespace Lykke.ServiceBusIntegration.Subscriber
                 return this;
 
             if (_log == null)
-                throw new Exception("Please specify ILog");
+                throw new Exception("Please specify ILog for: "+_applicationName);
 
             if (_deserializer == null)
-                throw new Exception("Please specify deserializer");
+                throw new Exception("Please specify deserializer: " + _applicationName);
 
             _task = TheTask();
 

@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Amqp;
+using Amqp.Framing;
 using Autofac;
 using Common;
 using Common.Log;
@@ -12,7 +13,7 @@ namespace Lykke.ServiceBusIntegration.Publisher
 
     public interface IServiceBusSerializer<in TModel>
     {
-        string Serialize(TModel item);
+        byte[] Serialize(TModel item);
     }
 
     public class ServiceBusPublisher<TModel> : IStartable, IMessageProducer<TModel>
@@ -88,7 +89,7 @@ namespace Lykke.ServiceBusIntegration.Publisher
             using (var message = _messages.Dequeue())
             {
                 var dataToPost = _serializer.Serialize(message.Item);
-                await senderLink.SendAsync(new Message(dataToPost));
+                await senderLink.SendAsync(new Message {BodySection = new Data {Binary = dataToPost} });
                 message.Compliete();
             }
 
@@ -108,10 +109,10 @@ namespace Lykke.ServiceBusIntegration.Publisher
                 return this;
 
             if (_serializer == null)
-                throw new Exception("Please specify serializer");
+                throw new Exception("Please specify serializer for: " + _applicationName);
 
             if (_log == null)
-                throw new Exception("Please specify ILog");
+                throw new Exception("Please specify ILog for: " + _applicationName);
 
             _workingTask = TheTask(); 
 
