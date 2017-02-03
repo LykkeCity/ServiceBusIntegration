@@ -1,11 +1,11 @@
-﻿{
+{
   "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true
   },
 
   "dependencies": {
-    "Lykke.Common": "1.1.4",
+    "Lykke.Common": "1.1.7",
     "Lykke.ServiceBusIntegration": "1.0.0-*",
     "Microsoft.NETCore.App": {
       "type": "platform",
